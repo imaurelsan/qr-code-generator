@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Générateur codeQR</title>
+</head>
+<body>
+  <h1>QR Code Generator</h1>
+  <label for="dataInput">Données:</label>
+  <input type="text" id="dataInput" placeholder="Entrez votre donnée">
+  <button onclick="generateQR()">Générer un code QR</button>
+  <div id="qrcode"></div>
+
+  <script>
+    // Définit une fonction appelée générerQR qui est appelée lorsque le bouton est cliqué
+    async function generateQR() {
+      // Obtenir les données du champ de saisie
+      const data = document.getElementById('dataInput').value;
+
+      try {
+        // Envoie une requête fetch au serveur pour générer le code QR
+        const response = await fetch(`/generate?data=${encodeURIComponent(data)}`);
+        // Reçoit la réponse texte du serveur
+        const qrImage = await response.text();
+        // Définit le innerHTML de la div avec id 'qrcode' à l'image QR
+        document.getElementById('qrcode').innerHTML = qrImage;
+      } catch (error) {
+        // Enregistre toutes les erreurs dans la console
+        console.error('Error generating QR code:', error);
+      }
+    }
+  </script>
+</body>
+</html>
